@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Dfd {
+  id              String   @id @default(uuid())
+  secretaria      String
+  dataProcessamento DateTime @default(now())
+  equipamentos    Equipamento[]
+}
+
+model Equipamento {
+  id         String @id @default(uuid())
+  nome       String
+  quantidade Int
+  dfdId      String
+  dfd        Dfd    @relation(fields: [dfdId], references: [id])
+}
