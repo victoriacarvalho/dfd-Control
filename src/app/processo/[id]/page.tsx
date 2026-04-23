@@ -290,8 +290,8 @@ export default function Dashboard({
               onClick={handleDownloadRelatorio}
               variant="outline"
               className="bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hidden sm:flex">
-<FileText className="w-4 h-4 mr-2" /> Planilha de Demanda (Excel)        
-    </Button>
+              <FileText className="w-4 h-4 mr-2" /> Planilha de Demanda (Excel)
+            </Button>
             <button
               onClick={() => router.push(`/lixeira?processoId=${processoId}`)}
               className="flex items-center gap-2 px-4 py-2 text-sm bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition">
@@ -488,11 +488,13 @@ export default function Dashboard({
                         fill="#2563eb"
                         radius={[4, 4, 0, 0]}
                         maxBarSize={50}
-                        onClick={(data) =>
-                          router.push(
-                            `/equipamentos/${data.name.toLowerCase()}?processoId=${processoId}`,
-                          )
-                        }
+                        onClick={(data) => {
+                          if (data && data.name) {
+                            router.push(
+                              `/equipamentos/${data.name.toLowerCase()}?processoId=${processoId}`,
+                            );
+                          }
+                        }}
                         className="cursor-pointer hover:opacity-80"
                       />
                     </BarChart>

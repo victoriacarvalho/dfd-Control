@@ -31,7 +31,7 @@ export default async function SecretariaDetails({
 
   const setoresMap = new Map<
     string,
-    Map<string, { quantidade: number; especificacao: string }>
+    Map<string, { nome: string; quantidade: number; especificacao: string }>
   >();
   let totalEquipamentosGeral = 0;
 
@@ -48,10 +48,7 @@ export default async function SecretariaDetails({
 
     const equipamentosDoSetor = setoresMap.get(nomeSetor)!;
     dfd.equipamentos.forEach((eq) => {
-      // Usa a sua função de simplificar (ou toUpperCase se preferir)
       const nomeEqPadrao = eq.nome.toUpperCase();
-
-      // NOVA LÓGICA: Cria uma chave única juntando o Nome e a Especificação
       const specPadrao = (eq.especificacao || "Sem especificação")
         .trim()
         .toLowerCase();
@@ -62,7 +59,7 @@ export default async function SecretariaDetails({
       if (equipamentosDoSetor.has(chaveUnica)) {
         const existente = equipamentosDoSetor.get(chaveUnica)!;
         equipamentosDoSetor.set(chaveUnica, {
-          nome: nomeEqPadrao, // Guarda o nome limpo
+          nome: nomeEqPadrao,
           quantidade: existente.quantidade + eq.quantidade,
           especificacao: existente.especificacao,
         });
@@ -75,7 +72,6 @@ export default async function SecretariaDetails({
       }
     });
   });
-
   const setoresAgrupados = Array.from(setoresMap.entries()).map(
     ([setorNome, equipamentosMap]) => ({
       nome: setorNome,

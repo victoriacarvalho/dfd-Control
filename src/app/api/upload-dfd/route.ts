@@ -59,9 +59,8 @@ export async function POST(request: Request) {
     const textoDoDocumento = await extractTextFromPDF(uint8);
 
     let textoString = "";
-    if (typeof textoDoDocumento === "string") {
-      textoString = textoDoDocumento.trim();
-    } else if (textoDoDocumento) {
+
+    if (textoDoDocumento) {
       textoString = String(textoDoDocumento).trim();
     }
 
@@ -166,8 +165,8 @@ REGRAS DE EXTRAÇÃO:
     });
 
     return NextResponse.json({ sucesso: true, data: novo });
-  } catch (error) {
-    if (error?.status === 429) {
+  } catch (error: any) {
+    if (error?.status === 429 || error?.response?.status === 429) {
       return NextResponse.json(
         {
           error:
@@ -176,6 +175,8 @@ REGRAS DE EXTRAÇÃO:
         { status: 429 },
       );
     }
+
+    console.error("ERRO UPLOAD:", error);
 
     return NextResponse.json(
       { error: "Erro interno no servidor ou falha na leitura do PDF" },
