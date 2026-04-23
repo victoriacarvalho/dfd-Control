@@ -1,11 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-import { PrismaNeon } from "@prisma/adapter-neon";
-
-const prisma = new PrismaClient({
-  adapter: new PrismaNeon({
-    connectionString: process.env.DATABASE_URL!,
-  }),
-});
+import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   const dados = await prisma.dfd.findMany({
