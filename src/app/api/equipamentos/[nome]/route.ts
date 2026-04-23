@@ -21,8 +21,8 @@ export async function GET(
   const dados = await prisma.equipamento.findMany({
     where: {
       dfd: {
-        deletedAt: null, // Ignora lixeira
-        ...(processoId ? { processoId } : {}), // <-- Filtra pelo processo
+        deletedAt: null,
+        ...(processoId ? { processoId } : {}),
       },
     },
     include: {
@@ -32,7 +32,8 @@ export async function GET(
 
   const agrupado: any = {};
 
-  dados.forEach((eq) => {
+  // ADICIONAMOS ': any' AQUI!
+  dados.forEach((eq: any) => {
     const nomeEquipamento = normalizar(eq.nome);
 
     if (nomeEquipamento !== nomeFiltro) return;
