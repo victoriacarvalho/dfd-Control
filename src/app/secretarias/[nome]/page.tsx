@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Building2, Laptop } from "lucide-react";
 import Link from "next/link";
-import EditableRow from "./EditableRow"; // <-- NOVO IMPORT
+import EditableRow from "./EditableRow";
 
 export default async function SecretariaDetails({
   params,
@@ -35,7 +35,8 @@ export default async function SecretariaDetails({
   >();
   let totalEquipamentosGeral = 0;
 
-  dfds.forEach((dfd) => {
+  // 1. ADICIONADO ': any' AQUI
+  dfds.forEach((dfd: any) => {
     const nomeSetor = (dfd.setor || "Geral / Sede Administrativa")
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
@@ -47,8 +48,10 @@ export default async function SecretariaDetails({
     }
 
     const equipamentosDoSetor = setoresMap.get(nomeSetor)!;
-    dfd.equipamentos.forEach((eq) => {
+
+    dfd.equipamentos.forEach((eq: any) => {
       const nomeEqPadrao = eq.nome.toUpperCase();
+
       const specPadrao = (eq.especificacao || "Sem especificação")
         .trim()
         .toLowerCase();
@@ -72,10 +75,10 @@ export default async function SecretariaDetails({
       }
     });
   });
+
   const setoresAgrupados = Array.from(setoresMap.entries()).map(
     ([setorNome, equipamentosMap]) => ({
       nome: setorNome,
-      // Como o nome já está guardado dentro do objeto, usamos apenas .values()
       equipamentos: Array.from(equipamentosMap.values()),
     }),
   );
@@ -158,14 +161,14 @@ export default async function SecretariaDetails({
                         <th className="p-4 text-xs font-semibold text-slate-500 uppercase w-[45%]">
                           Especificação Técnica Resumida
                         </th>
-                        {/* NOVO CABEÇALHO PARA ACOMODAR OS BOTÕES */}
                         <th className="p-4 text-xs font-semibold text-slate-500 uppercase w-[15%] text-right">
                           Ações
                         </th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 bg-white">
-                      {setor.equipamentos.map((eq, eqIndex) => (
+                      {/* 3. ADICIONADO ': any' e ': number' AQUI TAMBÉM */}
+                      {setor.equipamentos.map((eq: any, eqIndex: number) => (
                         <EditableRow
                           key={eqIndex}
                           eq={eq}
