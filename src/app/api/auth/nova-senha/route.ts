@@ -2,7 +2,11 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { jwtVerify, SignJWT } from "jose";
+<<<<<<< HEAD
 import { cookies } from "next/headers";
+=======
+import { cookies } from "next/headers"; 
+>>>>>>> 5544a23ac2e6d3edf189a54fe551d4f71b16cec1
 
 export async function POST(req: Request) {
   try {
