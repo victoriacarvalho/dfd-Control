@@ -2,23 +2,60 @@ generator client {
   provider = "prisma-client-js"
 }
 
-
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
 }
-
 model Dfd {
-  id              String   @id @default(uuid())
-  secretaria      String
-  dataProcessamento DateTime @default(now())
-  equipamentos    Equipamento[]
+  id           String   @id @default(cuid())
+  secretaria   String
+  setor      String? 
+  arquivoHash  String?   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  deletedAt    DateTime?
+  deletedBy    String?
+  versao       Int      @default(1)
+
+  equipamentos Equipamento[]
+  processoId   String
+  processo     Processo  @relation(fields: [processoId], references: [id])
 }
 
 model Equipamento {
-  id         String @id @default(uuid())
-  nome       String
-  quantidade Int
-  dfdId      String
-  dfd        Dfd    @relation(fields: [dfdId], references: [id])
+  id             String @id @default(cuid())
+  nome           String
+  quantidade     Int
+  especificacao  String?
+  dfdId          String
+  dfd            Dfd @relation(fields: [dfdId], references: [id])
+}
+
+model Log {
+  id         String   @id @default(cuid())
+  acao       String
+  entidade   String
+  entidadeId String
+  usuario    String
+  createdAt  DateTime @default(now())
+}
+
+model Usuario {
+  id             String   @id @default(cuid())
+  nome           String
+  email          String   @unique
+  senhaHash      String
+  primeiroAcesso Boolean  @default(true) 
+  createdAt      DateTime @default(now())
+  processos      Processo[]
+}
+
+model Processo {
+  id        String   @id @default(cuid())
+  nome      String  
+  createdAt DateTime @default(now())
+  status    String
+  usuarioId String
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id])
+  
+  dfds      Dfd[]
 }
