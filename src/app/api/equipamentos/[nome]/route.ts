@@ -6,8 +6,7 @@ export async function GET(
 ) {
   const { nome } = await context.params;
   const { searchParams } = new URL(req.url);
-  const processoId = searchParams.get("processoId"); // <-- Lê o processo
-
+  const processoId = searchParams.get("processoId");
   const normalizar = (str: string) =>
     str
       .toLowerCase()
@@ -32,7 +31,6 @@ export async function GET(
 
   const agrupado: any = {};
 
-  // ADICIONAMOS ': any' AQUI!
   dados.forEach((eq: any) => {
     const nomeEquipamento = normalizar(eq.nome);
 
