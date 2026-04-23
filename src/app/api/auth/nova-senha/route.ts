@@ -2,10 +2,13 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { jwtVerify, SignJWT } from "jose";
+import { cookies } from "next/headers"; 
 
 export async function POST(req: Request) {
   try {
-    const tokenCookie = req.cookies.get("token")?.value;
+    const cookieStore = await cookies();
+    const tokenCookie = cookieStore.get("token")?.value;
+
     if (!tokenCookie)
       return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
 
