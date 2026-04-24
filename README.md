@@ -1,4 +1,3 @@
-```markdown
 # DFD Control
 
 Um sistema web robusto desenvolvido para a gestão e controlo de Documentos de Formalização de Demanda (DFDs), integrando a gestão de processos, equipamentos e utilizadores.
